@@ -169,9 +169,9 @@ export default {
     deleteActivity(index) {
       this.activities.splice(index, 1);
     },
-      sendMessage () {
+      async sendMessage () {
         this.showSearch = true
-        axios.get(`https://fakerestapi.azurewebsites.net/api/v1/Activities/${this.message}`)
+        await axios.get(`https://fakerestapi.azurewebsites.net/api/v1/Activities/${this.message}`)
         .then((res)=>{
           this.resultSearch = res
         })

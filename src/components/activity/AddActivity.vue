@@ -41,15 +41,5 @@ export default {
       this.completed = false
     },
   },
-  watch: {
-    // showDialog: function(val) {
-    //   if(val) {
-    //     this.id = '';
-    //     this.title = '';
-    //     this.dueDate = '';
-    //     this.completed = '';
-    //   }
-    // }
-  },
 };
 </script>
