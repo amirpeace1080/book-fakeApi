@@ -41,6 +41,15 @@ export default createStore({
           })
       })
     },
+    // AddActivities({commit}, user){
+    //   return new Promise((resolve) => {
+    //     axios({ url: `${mainurl}/api/v1/Activities`, data: user, method: 'POST' })
+    //       .then((resp) => {
+    //         commit("SAVE_ACTIVITIES", resp)
+    //         resolve(resp)
+    //       })
+    //   })
+    // },
     loadAuthors({commit}){
       return new Promise((resolve) => {
         axios({ url: `${mainurl}/api/v1/Authors`, method: 'GET' })

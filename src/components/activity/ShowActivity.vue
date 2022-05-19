@@ -82,6 +82,7 @@
       </v-row>
     </v-container>
     <v-container v-show="showSearch === false">
+    <AddActivity :activities="activities"/>
       <v-row>
         <v-col
           lg="3"
@@ -149,9 +150,13 @@
 </template>
 
 <script>
+import AddActivity from './AddActivity.vue'
 import axios from "axios";
 
 export default {
+  components: {
+    AddActivity
+  },
   data() {
     return {
       show: false,
