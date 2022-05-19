@@ -1,12 +1,23 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/activity">activity</router-link> |
+    <router-link to="/author">Authors</router-link> |
+    <router-link to="/book">Books</router-link> |
+    <router-link to="/users">Users</router-link> |
+    <router-link to="/coverView">CoverView</router-link>
   </nav>
-  <router-view/>
+  <router-view />
 </template>
 
+
 <style lang="scss">
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: none;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
