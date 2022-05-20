@@ -59,6 +59,15 @@ export default createStore({
           })
       })
     },
+    BookItem({commit}, {id}){
+      return new Promise((resolve) => {
+        axios({ url: `${mainurl}/api/v1/Books/${id}`, method: 'GET' })
+          .then((resp) => {
+            commit("SAVE_BOOK", resp)
+            resolve(resp)
+          })
+      })
+    },
     loadCoverPhoto({commit}){
       return new Promise((resolve) => {
         axios({ url: `${mainurl}/api/v1/CoverPhotos`, method: 'GET' })

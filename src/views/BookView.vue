@@ -1,24 +1,22 @@
 <template>
-  <div class="about">
-    <h1>This is an books page</h1>
-    <h3>{{ books }}</h3>
+  <div>
+    <ShowBook />
   </div>
 </template>
 
 <script>
+import ShowBook from "../components/book/ShowBook.vue";
+
 export default {
+  components: {
+    ShowBook,
+  },
   data() {
-    return{
+    return {
       //
-    }
+    };
   },
-  computed: {
-    books() {
-      return this.$store.state.books;
-    }
-  },
-  created() {
-    this.$store.dispatch("loadBooks");
-  }
-}
+};
 </script>
+
+<style></style>

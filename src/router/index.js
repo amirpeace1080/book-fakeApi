@@ -5,6 +5,7 @@ import AuthorView from '../views/AuthorView.vue'
 import BookView from '../views/BookView.vue'
 import CoverView from '../views/CoverView.vue'
 import UserView from '../views/UserView.vue'
+import InfoBook from '../components/book/InfoBook.vue'
 
 const routes = [
   {
@@ -25,7 +26,14 @@ const routes = [
   {
     path: '/book',
     name: 'book',
-    component: BookView
+    component: BookView,
+    children: [
+      {
+        path: ':id',
+        name: 'book.id',
+        component: InfoBook
+      }
+    ]
   },
   {
     path: '/coverView',
