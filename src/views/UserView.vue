@@ -1,24 +1,20 @@
 <template>
-  <div class="about">
-    <h1>This is an books page</h1>
-    <h3>{{ users }}</h3>
+  <div>
+    <showUser />
   </div>
 </template>
 
 <script>
+import ShowUser from '../components/user/ShowUser.vue'
+
 export default {
+  components: {
+    ShowUser
+  },
   data() {
     return{
       //
     }
   },
-  computed: {
-    users() {
-      return this.$store.state.users;
-    }
-  },
-  created() {
-    this.$store.dispatch("loadUsers");
-  }
 }
 </script>

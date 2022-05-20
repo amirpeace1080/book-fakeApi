@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- <h1>{{books}}</h1> -->
     <v-btn color="primary" @click="openModal">ADD ITEM</v-btn>
     <v-dialog v-model="showDialog" width="500">
       <v-card width="450">
