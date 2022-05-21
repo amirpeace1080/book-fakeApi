@@ -1,25 +1,36 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/activity">activity</router-link> |
-    <router-link to="/author">Authors</router-link> |
-    <router-link to="/book">Books</router-link> |
-    <router-link to="/users">Users</router-link> |
-    <router-link to="/coverView">CoverView</router-link>
-  </nav>
-  <router-view />
+  <div>
+    <Navbar />
+    <router-view />
+    <Footer />
+  </div>
 </template>
 
+<script>
+import Navbar from "./components/Navbar.vue";
+import Footer from "./components/Footer.vue"
+
+export default {
+  components: {
+    Navbar,
+    Footer
+  },
+};
+</script>
 
 <style lang="scss">
+html,
+body{
+  font-family: 'Caveat', cursive;
+}
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 a:hover {
-    text-decoration: none;
+  text-decoration: none;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Caveat', cursive;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

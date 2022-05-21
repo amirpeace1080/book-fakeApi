@@ -217,7 +217,6 @@ body {
 
 .open-book sup {
   color: #cc0000;
-  font-family: "Rock Salt", cursive;
   left: 0;
   margin-top: -1em !important;
   max-width: 100% !important;

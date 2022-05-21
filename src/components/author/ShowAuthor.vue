@@ -214,7 +214,6 @@ export default {
   left: 47%;
   margin: 16px 0 0 35px;
   font-size: 16px;
-  font-family: Arial;
   color: #212121;
   letter-spacing: 1px;
   font-weight: 700;
