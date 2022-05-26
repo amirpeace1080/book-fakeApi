@@ -92,71 +92,81 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container v-show="showSearch === false">
-      <AddActivity :activities="activities" />
-      <v-row>
-        <v-col
-          lg="3"
-          sm="4"
-          cols="12"
-          v-for="(active, index) in activities"
-          :key="index"
-        >
-          <v-card
-            class="mx-auto"
-            max-width="322"
-            :color="active.completed ? '#4FC3F7' : '#FF8A65'"
-            hover
-            link
-          >
-            <v-img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7dmBKm68YURPgmQbeKam2BFk1UVpF1sQikA&usqp=CAU"
-              height="200px"
-            ></v-img>
 
-            <v-card-title> {{ active.title }} </v-card-title>
+    <div>
+      <div>
+        <v-container v-show="showSearch === false">
+          <AddActivity :activities="activities" />
+          <v-row>
+            <v-col
+              lg="3"
+              sm="4"
+              cols="12"
+              v-for="(active, index) in visiblePages"
+              :key="index"
+            >
+              <v-card
+                class="mx-auto"
+                max-width="322"
+                :color="active.completed ? '#4FC3F7' : '#FF8A65'"
+                hover
+                link
+              >
+                <v-img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7dmBKm68YURPgmQbeKam2BFk1UVpF1sQikA&usqp=CAU"
+                  height="200px"
+                ></v-img>
 
-            <!-- <v-card-subtitle> Army Knowledge Online </v-card-subtitle> -->
+                <v-card-title> {{ active.title }} </v-card-title>
 
-            <v-card-actions>
-              <v-btn text>
-                <ShareNetwork
-                  network="telegram"
-                  url="http://mohammad-sharifi.ir"
-                  title="CV online."
-                  description="I'm mohammad sharifi programmer front-end."
-                  hashtags="vuejs,javascript"
-                >
-                  Share
-                </ShareNetwork>
-              </v-btn>
+                <!-- <v-card-subtitle> Army Knowledge Online </v-card-subtitle> -->
 
-              <v-btn color="#000" text @click="deleteActivity(index)">
-                Delete
-              </v-btn>
+                <v-card-actions>
+                  <v-btn text>
+                    <ShareNetwork
+                      network="telegram"
+                      url="http://mohammad-sharifi.ir"
+                      title="CV online."
+                      description="I'm mohammad sharifi programmer front-end."
+                      hashtags="vuejs,javascript"
+                    >
+                      Share
+                    </ShareNetwork>
+                  </v-btn>
 
-              <v-spacer></v-spacer>
+                  <v-btn color="#000" text @click="deleteActivity(index)">
+                    Delete
+                  </v-btn>
 
-              <v-btn icon @click="show = !show">
-                <v-icon>{{
-                  show ? "mdi-chevron-up" : "mdi-chevron-down"
-                }}</v-icon>
-              </v-btn>
-            </v-card-actions>
+                  <v-spacer></v-spacer>
 
-            <v-expand-transition>
-              <div v-show="show">
-                <v-divider></v-divider>
+                  <v-btn icon @click="show = !show">
+                    <v-icon>{{
+                      show ? "mdi-chevron-up" : "mdi-chevron-down"
+                    }}</v-icon>
+                  </v-btn>
+                </v-card-actions>
 
-                <v-card-text>
-                  {{ active.dueDate }}
-                </v-card-text>
-              </div>
-            </v-expand-transition>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+                <v-expand-transition>
+                  <div v-show="show">
+                    <v-divider></v-divider>
+
+                    <v-card-text>
+                      {{ active.dueDate }}
+                    </v-card-text>
+                  </div>
+                </v-expand-transition>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+
+        <v-pagination
+          v-model="page"
+          :length="Math.ceil(pages.length / perPage)"
+        ></v-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -175,6 +185,9 @@ export default {
       showSearch: false,
       message: null,
       resultSearch: null,
+      page: 1,
+      perPage: 12,
+      pages: [],
     };
   },
   methods: {
@@ -196,12 +209,18 @@ export default {
     activities() {
       return this.$store.state.activities.data;
     },
+    visiblePages() {
+      return this.pages.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      );
+    },
   },
   created() {
-    this.loading= true
-    this.$store.dispatch("loadActivities").then((res)=>{
-      this.loading= false
-      res.data
+    this.loading = true;
+    this.$store.dispatch("loadActivities").then((res) => {
+      this.loading = false;
+      this.pages = res.data;
     });
   },
 };
@@ -215,7 +234,6 @@ export default {
 .mx-auto:hover {
   box-shadow: 9px 9px 9px rgba(20, 20, 20, 0.6);
 }
-
 
 .loading {
   -webkit-animation: fadein 2s;

@@ -68,6 +68,9 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <div>
+      <div>
     <v-container v-show="showSearch === false">
       <AddAuthor :authors="authors" />
       <v-row>
@@ -75,7 +78,7 @@
           lg="3"
           sm="4"
           cols="6"
-          v-for="(author, index) in authors"
+          v-for="(author, index) in visiblePages"
           :key="index"
         >
           <v-card class="rounded-shaped elevation-6" max-width="280" outlined>
@@ -110,6 +113,13 @@
         </v-col>
       </v-row>
     </v-container>
+
+        <v-pagination
+          v-model="page"
+          :length="Math.ceil(pages.length / perPage)"
+        ></v-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -127,6 +137,9 @@ export default {
       showSearch: false,
       message: null,
       resultSearch: null,
+      page: 1,
+      perPage: 20,
+      pages: [],
     };
   },
   methods: {
@@ -145,12 +158,18 @@ export default {
     authors() {
       return this.$store.state.authors.data;
     },
+    visiblePages() {
+      return this.pages.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      );
+    },
   },
   created() {
     this.loading = true
     this.$store.dispatch("loadAuthors").then((res)=>{
       this.loading = false
-      res.data
+      this.pages = res.data
     });
   },
 };

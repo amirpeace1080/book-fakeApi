@@ -15,13 +15,13 @@
         <v-row align="center">
           <v-col cols="12">
             <v-text-field
-            v-model="message"
-            append-icon="mdi-send"
-            :prepend-icon="icon"
-            filled
-            label="Search in ID"
-            type="text"
-            @click:append="sendMessage"
+              v-model="message"
+              append-icon="mdi-send"
+              :prepend-icon="icon"
+              filled
+              label="Search in ID"
+              type="text"
+              @click:append="sendMessage"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -30,11 +30,7 @@
     <!-- end search title -->
     <v-container v-show="showSearch">
       <v-row>
-        <v-col
-          lg="4"
-          sm="6"
-          cols="12"
-        >
+        <v-col lg="4" sm="6" cols="12">
           <div class="container">
             <div
               class="single_advisor_profile wow fadeInUp"
@@ -54,67 +50,79 @@
               </div>
               <!-- Team Details-->
               <div class="single_advisor_details_info">
-                <h6>{{ resultSearch&&resultSearch.data.userName }}</h6>
-                <p class="designation">{{ resultSearch&&resultSearch.data.password }}</p>
+                <h6>{{ resultSearch && resultSearch.data.userName }}</h6>
+                <p class="designation">
+                  {{ resultSearch && resultSearch.data.password }}
+                </p>
               </div>
             </div>
           </div>
         </v-col>
       </v-row>
     </v-container>
-    <v-container v-show="showSearch === false">
-      <AddUser :users="users" />
-      <v-row>
-        <v-col
-          lg="4"
-          sm="6"
-          cols="12"
-          v-for="(user, index) in users"
-          :key="index"
-        >
-          <div class="container">
-            <div
-              class="single_advisor_profile wow fadeInUp"
-              data-wow-delay="0.3s"
-              style="
-                visibility: visible;
-                animation-delay: 0.3s;
-                animation-name: fadeInUp;
-              "
+
+    <div>
+      <div>
+        <v-container v-show="showSearch === false">
+          <AddUser :users="users" />
+          <v-row>
+            <v-col
+              lg="4"
+              sm="6"
+              cols="12"
+              v-for="(user, index) in visiblePages"
+              :key="index"
             >
-              <!-- Team Thumb-->
-              <div class="advisor_thumb">
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                  alt=""
-                />
-                <!-- Social Info-->
-                <div class="social-info">
-                  <a href="#"><i class="fa fa-facebook"></i></a
-                  ><a href="#"><i class="fa fa-twitter"></i></a
-                  ><a href="#"><i class="fa fa-linkedin"></i></a>
+              <div class="container">
+                <div
+                  class="single_advisor_profile wow fadeInUp"
+                  data-wow-delay="0.3s"
+                  style="
+                    visibility: visible;
+                    animation-delay: 0.3s;
+                    animation-name: fadeInUp;
+                  "
+                >
+                  <!-- Team Thumb-->
+                  <div class="advisor_thumb">
+                    <img
+                      src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                      alt=""
+                    />
+                    <!-- Social Info-->
+                    <div class="social-info">
+                      <a href="#"><i class="fa fa-facebook"></i></a
+                      ><a href="#"><i class="fa fa-twitter"></i></a
+                      ><a href="#"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                  </div>
+                  <!-- Team Details-->
+                  <div class="single_advisor_details_info">
+                    <h6>{{ user.userName }}</h6>
+                    <p class="designation">{{ user.password }}</p>
+                  </div>
                 </div>
               </div>
-              <!-- Team Details-->
-              <div class="single_advisor_details_info">
-                <h6>{{ user.userName }}</h6>
-                <p class="designation">{{ user.password }}</p>
-              </div>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+            </v-col>
+          </v-row>
+        </v-container>
+        
+        <v-pagination
+          v-model="page"
+          :length="Math.ceil(pages.length / perPage)"
+        ></v-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import AddUser from './AddUser.vue'
+import axios from "axios";
+import AddUser from "./AddUser.vue";
 
 export default {
   components: {
-    AddUser
+    AddUser,
   },
   data() {
     return {
@@ -122,27 +130,39 @@ export default {
       showSearch: false,
       message: null,
       resultSearch: null,
+      page: 1,
+      perPage: 6,
+      pages: [],
     };
   },
   methods: {
-    async sendMessage () {
-        this.showSearch = true
-        await axios.get(`https://fakerestapi.azurewebsites.net/api/v1/Users/${this.message}`)
-        .then((res)=>{
-          this.resultSearch = res
-        })
-      },
+    async sendMessage() {
+      this.showSearch = true;
+      await axios
+        .get(
+          `https://fakerestapi.azurewebsites.net/api/v1/Users/${this.message}`
+        )
+        .then((res) => {
+          this.resultSearch = res;
+        });
+    },
   },
   computed: {
     users() {
       return this.$store.state.users.data;
     },
+    visiblePages() {
+      return this.pages.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      );
+    },
   },
   created() {
-    this.loading = true
-    this.$store.dispatch("loadUsers").then((res)=>{
-      this.loading = false
-      res.data
+    this.loading = true;
+    this.$store.dispatch("loadUsers").then((res) => {
+      this.loading = false;
+      this.pages = res.data;
     });
   },
 };
@@ -284,7 +304,6 @@ body {
 .single_advisor_profile:focus .single_advisor_details_info p {
   color: #ffffff;
 }
-
 
 .loading {
   -webkit-animation: fadein 2s;

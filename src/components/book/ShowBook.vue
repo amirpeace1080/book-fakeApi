@@ -53,6 +53,9 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <div>
+      <div>
     <v-container v-show="showSearch === false">
       <AddBook :books="books" />
       <v-row>
@@ -60,7 +63,7 @@
           lg="3"
           sm="4"
           cols="12"
-          v-for="(book, index) in books"
+          v-for="(book, index) in visiblePages"
           :key="index"
         >
           <div class="container">
@@ -80,16 +83,23 @@
         </v-col>
       </v-row>
     </v-container>
+
+        <v-pagination
+          v-model="page"
+          :length="Math.ceil(pages.length / perPage)"
+        ></v-pagination>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-import AddBook from './AddBook.vue'
+import axios from "axios";
+import AddBook from "./AddBook.vue";
 
 export default {
-  components:{
-    AddBook
+  components: {
+    AddBook,
   },
   data() {
     return {
@@ -97,27 +107,39 @@ export default {
       showSearch: false,
       message: null,
       resultSearch: null,
+      page: 1,
+      perPage: 12,
+      pages: [],
     };
   },
   methods: {
-    async sendMessage () {
-        this.showSearch = true
-        await axios.get(`https://fakerestapi.azurewebsites.net/api/v1/Books/${this.message}`)
-        .then((res)=>{
-          this.resultSearch = res
-        })
-      },
+    async sendMessage() {
+      this.showSearch = true;
+      await axios
+        .get(
+          `https://fakerestapi.azurewebsites.net/api/v1/Books/${this.message}`
+        )
+        .then((res) => {
+          this.resultSearch = res;
+        });
+    },
   },
   computed: {
     books() {
       return this.$store.state.books.data;
     },
+    visiblePages() {
+      return this.pages.slice(
+        (this.page - 1) * this.perPage,
+        this.page * this.perPage
+      );
+    },
   },
   created() {
-    this.loading = true
-    this.$store.dispatch("loadBooks").then((res)=>{
-      this.loading = false
-      res.data
+    this.loading = true;
+    this.$store.dispatch("loadBooks").then((res) => {
+      this.loading = false;
+      this.pages = res.data;
     });
   },
 };
@@ -231,7 +253,7 @@ export default {
   background: #fff;
   color: #000;
 }
-.description{
+.description {
   height: 70px;
   overflow: hidden;
 }
